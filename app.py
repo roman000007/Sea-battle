@@ -24,3 +24,6 @@ def has_ship(field, coords):
     return field[ind_1][ind_2] == "*"
 
 #print(has_ship(field, ('A','1')))
+
+
+#some_stupid_code
