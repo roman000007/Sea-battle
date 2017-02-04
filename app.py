@@ -1,4 +1,46 @@
 import random
+#add documentation and other functions
+
+def delete_not_empty_fields(coords, increase, data, size):
+    for i in range(-1, size + 1):
+        for j in range(-1, 2):
+            col_1 = j if increase[1] else 0
+            col_2 = j if increase[0] else 0
+            x = coords[0] + increase[0] * i + col_1
+            y = coords[1] + increase[1] * i + col_2
+            if (x, y) in data:
+                data.remove((x, y))
+    return data
+
+
+
+def setup_ships(field, ships):
+    field, ships = setup_ship(4, field, ships)
+    field, ships = setup_ship(3, field, ships)
+    field, ships = setup_ship(3, field, ships)
+    field, ships = setup_ship(2, field, ships)
+    field, ships = setup_ship(2, field, ships)
+    field, ships = setup_ship(2, field, ships)
+    field, ships = setup_ship(1, field, ships)
+    field, ships = setup_ship(1, field, ships)
+    field, ships = setup_ship(1, field, ships)
+    field, ships = setup_ship(1, field, ships)
+    return field, ships
+
+
+
+def show_table(ships):
+    for i in range(10):
+        for j in range(10):
+            if (i, j) in ships:
+                print("X", end="")
+            else:
+                print(".", end="")
+        print("")
+
+
+
+
 
 def get_direction(crds, size, data):
     directions = []
@@ -39,18 +81,14 @@ def setup_ship(size, data, ships):
             break
     for i in range(size):
         ships.append((coords[0] + increase[0] * i, coords[1] + increase[1] * i))
-    # delete surrounded data
-    for i in range(size):
-        data.remove((coords[0] + increase[0] * i, coords[1] + increase[1] * i))
-    print(data)
-    # Not worked!
-    print(ships)
-    print(coords, increase)
+    data = delete_not_empty_fields(coords, increase, data, size)
+    return data, ships
 
 def generate_field():
     ships = []
-    coords = [(x, y) for x in range(10) for y in range(10)]
-    setup_ship(4, coords, ships)
+    field = [(x, y) for x in range(10) for y in range(10)]
+    field, ships = setup_ships(field, ships)
+    show_table(ships)
 
 
 
