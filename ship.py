@@ -5,23 +5,23 @@ sys.path.append(os.path.join(os.path.dirname(__file__)))
 import field
 
 
-def setup_ships(field, ships):
+def setup_ships(data, ships):
     """
     (arr of tuples, arr of tuples) -> (arr of tuples, arr of tuples)
     Setup all ships into field
     return: return updated arrays of field and ships
     """
-    field, ships = setup_ship(4, field, ships)
-    field, ships = setup_ship(3, field, ships)
-    field, ships = setup_ship(3, field, ships)
-    field, ships = setup_ship(2, field, ships)
-    field, ships = setup_ship(2, field, ships)
-    field, ships = setup_ship(2, field, ships)
-    field, ships = setup_ship(1, field, ships)
-    field, ships = setup_ship(1, field, ships)
-    field, ships = setup_ship(1, field, ships)
-    field, ships = setup_ship(1, field, ships)
-    return field, ships
+    data, ships = setup_ship(4, data, ships)
+    data, ships = setup_ship(3, data, ships)
+    data, ships = setup_ship(3, data, ships)
+    data, ships = setup_ship(2, data, ships)
+    data, ships = setup_ship(2, data, ships)
+    data, ships = setup_ship(2, data, ships)
+    data, ships = setup_ship(1, data, ships)
+    data, ships = setup_ship(1, data, ships)
+    data, ships = setup_ship(1, data, ships)
+    data, ships = setup_ship(1, data, ships)
+    return ships
 
 
 def get_direction(crds, size, data):
@@ -61,7 +61,7 @@ def get_direction(crds, size, data):
 def setup_ship(size, data, ships):
     """
     (int, array of tuples, array of tuples) -> (array of tuples, array of tuples) 
-    get size of ship, aloowed coords and setup ship in random position 
+    Get size of ship, aloowed coords and setup ship in random position 
     Return: updated field and array of ships
     """
     while True:
@@ -78,10 +78,45 @@ def setup_ship(size, data, ships):
 
 def has_ship(ships, coords):
     """
-    (array ) -> 
-    Descr
-    Return: 
+    (array of tuples, tuple) -> bool 
+    Check is ship in selected position
+    Return: is ship in selected position
     """
-    ind_1 = ord(coords[0]) - ord('A')
-    ind_2 = int(coords[1]) - 1
-    return (ind1, ind2) in ships
+    return coords in ships
+
+
+def ship_size(ships, coords):
+    """
+    (array of tuples, tuple) -> int
+    Return: length of ship which is in selected position 
+    """
+    l = 1
+    if coords not in ships:
+        return 0
+    for i in range(1, 4):
+        if(coords[0] + i, coords[1])in ships:
+            l += 1
+        else:
+            break
+    for i in range(1, 4):
+        if(coords[0] - i, coords[1])in ships:
+            l += 1
+        else:
+            break
+    for i in range(1, 4):
+        if(coords[0], coords[1] + i)in ships:
+            l += 1
+        else:
+            break
+    for i in range(1, 4):
+        if(coords[0], coords[1] - i)in ships:
+            l += 1
+        else:
+            break
+    return l
+            
+
+
+
+
+
