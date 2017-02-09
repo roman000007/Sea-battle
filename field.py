@@ -101,5 +101,3 @@ def is_valid(ships):
     else:
         return False
     
-        
-    
