@@ -6,6 +6,7 @@ class Game:
 		
 class Field:
 <<<<<<< HEAD
+<<<<<<< HEAD
     def __init__(self, file = None):
         self.dots = []
         self.ships = []
@@ -86,6 +87,8 @@ class Field:
         self.setup_ship(1)
         self.setup_ship(1)
 =======
+=======
+>>>>>>> parent of 32c53d3... strange
 	def __init__(self, file = None):
 		self.dots = []
 		self.ships = []
@@ -121,6 +124,9 @@ class Field:
 		self.setup_ship(1)
 		self.setup_ship(1)
 		self.setup_ship(1)
+<<<<<<< HEAD
+>>>>>>> parent of 32c53d3... strange
+=======
 >>>>>>> parent of 32c53d3... strange
 
 		
@@ -146,6 +152,7 @@ class Field:
 				s = Ship(self, dot)
 				self.ships.append(s)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         
         
@@ -257,6 +264,8 @@ def is_valid(self):
                 if (x, y) in self.allowed_coords:
                     self.allowed_coords.remove((x, y))
 =======
+=======
+>>>>>>> parent of 32c53d3... strange
 		
 		
 		
@@ -326,6 +335,9 @@ def is_valid(self):
 				y = coords[1] + increase[1] * i + col_2
 				if (x, y) in self.allowed_coords:
 					self.allowed_coords.remove((x, y))
+<<<<<<< HEAD
+>>>>>>> parent of 32c53d3... strange
+=======
 >>>>>>> parent of 32c53d3... strange
 
 	
@@ -351,6 +363,7 @@ def is_valid(self):
 			field_str += "\n"
 		return field_str
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     
     
@@ -393,6 +406,8 @@ def is_valid(self):
     
     
 =======
+=======
+>>>>>>> parent of 32c53d3... strange
 	
 	
 	def get_direction(self, coords, size):
@@ -429,11 +444,15 @@ def is_valid(self):
 		return directions[0]
 	
 	
+<<<<<<< HEAD
+>>>>>>> parent of 32c53d3... strange
+=======
 >>>>>>> parent of 32c53d3... strange
 
 	
 	
 class Player:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     def __init__(self, name, turn, field):
@@ -476,6 +495,13 @@ class Ship:
 		
 		
 class Ship:
+=======
+	def __init__(self):
+		pass
+		
+		
+class Ship:
+>>>>>>> parent of 32c53d3... strange
 	def __init__(self, field, coords = None):
 		self.healthy_coords = []
 		self.damaged_coords = []
@@ -484,6 +510,9 @@ class Ship:
 		self.length = len(self.healthy_coords)
 	
 		
+<<<<<<< HEAD
+>>>>>>> parent of 32c53d3... strange
+=======
 >>>>>>> parent of 32c53d3... strange
 f1 = Field("field")
 print(f1)
