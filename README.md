@@ -2,6 +2,8 @@
 
 Clear methods and functions in classes(pb.\pr.)
 
-Game algorithm(like player`s turn)
+Documentation
 
-Add is_valid function
+Game algorithm(like player`s turn)(wait with it)
+
+PEP8? Delete rubbish?

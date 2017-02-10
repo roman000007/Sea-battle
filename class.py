@@ -15,12 +15,56 @@ class Field:
         self._generate_field()
         
         
+<<<<<<< HEAD
     
     def all_ships(self):
         res = ""
         for ship in self.ships:
             res += str(ship.healthy_coords) + " " + str(ship.damaged_coords) + "\n"
         return res  
+=======
+    def get_ship_by_coords(self, coords):
+        for ship in self.ships:
+            if coords in ship.healthy_coords or coords in ship.damaged_coords:
+                return ship
+        return None
+        
+        
+    def is_valid(self):
+        """
+        (arr of tuples) -> bool
+        Check is field is valid
+        Return: is field is valid
+        """
+        lens = {1: 0, 2: 0, 3: 0, 4: 0}
+        for sh in self.dots:
+            if sh[0] > 9 or sh[0] < 0 or sh[1] > 9 or sh[1] < 0:
+                return False
+            if(sh[0] + 1, sh[1] + 1) in self.dots or \
+            (sh[0] + 1, sh[1] - 1) in self.dots or \
+            (sh[0] - 1, sh[1] + 1) in self.dots or \
+            (sh[0] - 1, sh[1] - 1) in self.dots:
+                return False
+            l = self.get_ship_by_coords(sh).length
+            if l not in lens:
+                return False
+            else:
+                lens[l] += 1
+        if lens[1] == 4 and lens[2] == 6 and \
+        lens[3] == 6 and lens[4] == 4:
+            return True
+        else:
+            return False
+            
+        
+        
+        
+    
+    def show_all_ships(self):
+        res = ""
+        for ship in self.ships:
+            print(ship)
+>>>>>>> origin/master
         
         
     
@@ -99,6 +143,7 @@ class Field:
         return ship_coords
         
         
+<<<<<<< HEAD
 def is_valid(self):
     """
     (arr of tuples) -> bool
@@ -128,6 +173,8 @@ def is_valid(self):
         
         
         
+=======
+>>>>>>> origin/master
     def setup_ship(self, size):
         """
         (int, array of tuples, array of tuples) -> (array of tuples, array of tuples) 
@@ -137,13 +184,20 @@ def is_valid(self):
         while True:
             choosed = random.randint(0, len(self.allowed_coords) - 1)
             coords = self.allowed_coords[choosed]
+<<<<<<< HEAD
             increase = self._get_direction(coords, size)
+=======
+            increase = self.get_direction(coords, size)
+>>>>>>> origin/master
             if increase is not None:
                 break
         s = Ship(self)
         for i in range(size):
             s.healthy_coords.append((coords[0] + increase[0] * i, coords[1] + increase[1] * i))
+<<<<<<< HEAD
             s.length = len(s.healthy_coords) + len(s.damaged_coords)
+=======
+>>>>>>> origin/master
             self.dots.append((coords[0] + increase[0] * i, coords[1] + increase[1] * i))
         self._delete_not_empty_fields(coords, increase, size)
         self.ships.append(s)
@@ -189,7 +243,11 @@ def is_valid(self):
 
     
     
+<<<<<<< HEAD
     def _get_direction(self, coords, size):
+=======
+    def get_direction(self, coords, size):
+>>>>>>> origin/master
         """
         (tuple, int, arr of tuples) -> tuple 
         Get coords, search in which direction we can increase ship and return random one
@@ -227,10 +285,15 @@ def is_valid(self):
     
     
 class Player:
+<<<<<<< HEAD
     def __init__(self, name, turn, field):
         self.name = name
         self.turn = turn
         self.field = field
+=======
+    def __init__(self):
+        pass
+>>>>>>> origin/master
         
         
 class Ship:
@@ -240,8 +303,24 @@ class Ship:
         if coords is not None:
             self.healthy_coords = field._find_all_ship_coords(coords)
         self.length = len(self.healthy_coords)
+<<<<<<< HEAD
     
+=======
+        
+    def __repr__(self):
+        res = "-" * 20
+        res += "\nHealty coords: "
+        for el in self.healthy_coords:
+            res += str(el) + "; "
+        res += "\nDamaged coords: "
+        for el in self.damaged_coords:
+            res += str(el) + "; "
+        res += "\nLength: " + str(self.length) + "\n"
+        return res
+        
+>>>>>>> origin/master
         
 f1 = Field("field")
 print(f1)
-print(f1.all_ships())
+print(f1.is_valid())
+print(f1.show_all_ships())
