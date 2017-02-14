@@ -1,9 +1,13 @@
 import random
-class Game:
-    def __init__(self):
-        pass
+import os
+clear = lambda: os.system('cls')
 
-        
+# * - ship
+# X - hitted
+# O - missed
+#   - Empty
+# docs, wait(good), field, player info, readme.md, commit
+      
 class Field:
     def __init__(self, file = None):
         self.dots = []
@@ -231,60 +235,174 @@ class Field:
 
     
     
-class Player:
-    def __init__(self):
-        pass
-        
-        
 class Ship:
     def __init__(self, field, coords = None):
         self.healthy_coords = []
         self.damaged_coords = []
+        self.killed = False
         if coords is not None:
             self.healthy_coords = field._find_all_ship_coords(coords)
         self.length = len(self.healthy_coords)
         
     def __repr__(self):
-        res = "-" * 20
+        res = "About Ship:" + "-" * 10
         res += "\nHealty coords: "
         for el in self.healthy_coords:
             res += str(el) + "; "
         res += "\nDamaged coords: "
         for el in self.damaged_coords:
             res += str(el) + "; "
-        res += "\nLength: " + str(self.length) + "\n"
+        res += "\nLength: " + str(self.length)
         return res
         
 
 class Player:
-	def __init__(self, name, field):
-		self.name = name
-		self.field = field
-		
-		
+    def __init__(self, name, field):
+        self.name = name
+        self.field = field
+        self.shoots = []
+    
+    def shoot_at(self, coords, player):
+        self.shoots.append(coords)
+        if coords in player.field.dots:
+            ship = player.field.get_ship_by_coords(coords) 
+            ship.healthy_coords.remove(coords)
+            ship.damaged_coords.append(coords)
+            print("You hit ship!")
+            if ship.length == len(ship.damaged_coords):
+                print("You destroy ship!")
+                player.update_coords(ship.damaged_coords)
+                ship.killed = True
+            return True
+        else:
+            print("You missed.. Sorry")
+            return False
+    
+    
+    def update_coords(self, coords):
+        vert = True if len(coords) == 1 or coords[0][0] == coords[1][0] else False
+        if vert:
+            min_v = coords[0][1]
+            max_v = coords[0][1]
+            for coord in coords:
+                min_v = min(min_v, coord[1])
+                max_v = max(max_v, coord[1])
+                self.shoots.append((coord[0] - 1, coord[1]))
+                self.shoots.append((coord[0] + 1, coord[1]))
+            self.shoots.append((coords[0][0] - 1, min_v - 1))
+            self.shoots.append((coords[0][0], min_v - 1))
+            self.shoots.append((coords[0][0] + 1, min_v - 1))
+            self.shoots.append((coords[0][0] - 1, max_v + 1))
+            self.shoots.append((coords[0][0], max_v + 1))
+            self.shoots.append((coords[0][0] + 1, max_v + 1))
+        else:
+            min_v = coords[0][0]
+            max_v = coords[0][0]
+            for coord in coords:
+                min_v = min(min_v, coord[0])
+                max_v = max(max_v, coord[0])
+                self.shoots.append((coord[0], coord[1] - 1))
+                self.shoots.append((coord[0], coord[1] + 1))
+            self.shoots.append((min_v - 1, coords[0][1] - 1))
+            self.shoots.append((min_v - 1, coords[0][1]))
+            self.shoots.append((min_v - 1, coords[0][1] + 1))
+            self.shoots.append((max_v + 1, coords[0][1] - 1))
+            self.shoots.append((max_v + 1, coords[0][1]))
+            self.shoots.append((max_v + 1, coords[0][1] + 1))
+    
+    def show_shoots(self, ships):
+        res = ""
+        for i in range(10):
+            for j in range(10):
+                if (i, j) in self.shoots and (i, j) not in ships:
+                    res += "O"
+                elif (i, j) in self.shoots and (i, j) in ships:
+                    res += "X"
+                else:
+                    res += " "
+            res += "\n"
+        return res
+    
+    
+    def read_position(self, player):
+        while True:
+            s = input()
+            try:
+                i1 = int(ord(s[:1]) - ord('A'))
+                i2 = int(s[1:]) - 1
+            except:
+                print("Invalid syntax, use 'A1'-'J10'")
+                self.read_position(player)
+            if i1 > 9 or i2 > 9 or i1 < 0 or i2 < 0:
+                print("Field is too small, use 'A1'-'J10'")
+                self.read_position(player)
+            elif (i1, i2) in player.shoots:
+                print("You already hit this, choose another one")
+                self.read_position(player)
+            else:
+                break
+        return i1, i2 
+        
+        
 class Game:
-	def __init__(self, pl1, pl2):
-		self.f1 = pl1.field
-		self.f2 = pl2.field
-		self.pl1 = pl1
-		self.pl2 = pl2
-		self.turn = 0
-		print("Game Battleship")
-		player_turn()
-		
-	def player_turn(self):
-		# pl1.shoot_at or pl2
-		
-		
-f1 = Field()
-f2 = Field("field")
-pl1 = Player("Roma", f1)
-pl2 = Player("Someone, who lose", f2)
-print(f1)
-print(f1.is_valid())
-print(f1.show_all_ships())
-game = Game(f1, f2)
-# * - ship
-# X - hitted
-# O - missed
-#   - Empty
+    def __init__(self):
+        print("=============================================")
+        print("       Game Battleship")
+        print("=============================================")
+        name1 = input("Player ONE name: ")
+        name1 = name1 if name1 != "" else "Player ONE"
+        fl1 = input("Enter your TXT file name(or ignore): ")
+        f1 = Field() if fl1 == "" else Field(fl1)
+        
+        name2 = input("Player TWO name: ")
+        name2 = name2 if name2 != "" else "Player TWO"
+        fl2 = input("Enter your TXT file name(or ignore): ")
+        f2 = Field() if fl2 == "" else Field(fl2)
+        
+        pl1 = Player(name1, f1)
+        pl2 = Player(name2, f2)
+        self.pl1 = pl1
+        self.pl2 = pl2
+        self.current_player = True
+        
+        self.player_turn()
+        
+        
+    def player_turn(self):
+        clear()  
+        if self.current_player:
+            print(self.pl1.name, "turn:")
+            print(self.pl2.show_shoots(self.pl2.field.dots))
+            coords = self.pl1.read_position(self.pl2)
+            self.current_player = not self.current_player if self.pl2.shoot_at(coords, self.pl2) else self.current_player 
+        else:
+            print(self.pl2.name, "turn:")
+            print(self.pl1.show_shoots(self.pl1.field.dots))
+            coords = self.pl2.read_position(self.pl1)
+            self.current_player = not self.current_player if self.pl1.shoot_at(coords, self.pl1) else self.current_player
+        input()
+        self.current_player = not self.current_player 
+        if self.check_winner(self.pl1):
+            self.show_winner(self.pl2)
+        elif self.check_winner(self.pl2):
+            self.show_winner(self.pl1)
+        else:
+            self.player_turn()
+    
+    
+    def check_winner(self, player):
+        yes = True
+        for ship in player.field.ships:
+            if not ship.killed:
+                yes = False
+                break
+        return yes
+            
+    
+    
+    def show_winner(self, player):
+        print(player.name, "wins!!! CONGRATULATIONS!")
+        
+
+
+game = Game()
