@@ -255,8 +255,36 @@ class Ship:
         res += "\nLength: " + str(self.length) + "\n"
         return res
         
-        
-f1 = Field("field")
+
+class Player:
+	def __init__(self, name, field):
+		self.name = name
+		self.field = field
+		
+		
+class Game:
+	def __init__(self, pl1, pl2):
+		self.f1 = pl1.field
+		self.f2 = pl2.field
+		self.pl1 = pl1
+		self.pl2 = pl2
+		self.turn = 0
+		print("Game Battleship")
+		player_turn()
+		
+	def player_turn(self):
+		# pl1.shoot_at or pl2
+		
+		
+f1 = Field()
+f2 = Field("field")
+pl1 = Player("Roma", f1)
+pl2 = Player("Someone, who lose", f2)
 print(f1)
 print(f1.is_valid())
 print(f1.show_all_ships())
+game = Game(f1, f2)
+# * - ship
+# X - hitted
+# O - missed
+#   - Empty
