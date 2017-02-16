@@ -6,7 +6,7 @@ clear = lambda: os.system('cls')
 # X - hitted
 # O - missed
 #   - Empty
-# docs, wait(good), field, player info, readme.md, commit
+# docs, readme.md, field info, github and share
       
 class Field:
     def __init__(self, file = None):
@@ -315,7 +315,7 @@ class Player:
         for i in range(10):
             for j in range(10):
                 if (i, j) in self.shoots and (i, j) not in ships:
-                    res += "O"
+                    res += "."
                 elif (i, j) in self.shoots and (i, j) in ships:
                     res += "X"
                 else:
@@ -326,19 +326,19 @@ class Player:
     
     def read_position(self, player):
         while True:
-            s = input()
+            s = input("Your shoot: ")
             try:
                 i1 = int(ord(s[:1]) - ord('A'))
                 i2 = int(s[1:]) - 1
             except:
                 print("Invalid syntax, use 'A1'-'J10'")
-                self.read_position(player)
+                continue
             if i1 > 9 or i2 > 9 or i1 < 0 or i2 < 0:
                 print("Field is too small, use 'A1'-'J10'")
-                self.read_position(player)
+                continue
             elif (i1, i2) in player.shoots:
                 print("You already hit this, choose another one")
-                self.read_position(player)
+                continue
             else:
                 break
         return i1, i2 
@@ -371,16 +371,18 @@ class Game:
     def player_turn(self):
         clear()  
         if self.current_player:
-            print(self.pl1.name, "turn:")
+            print(self.pl2.name, "field:")
             print(self.pl2.show_shoots(self.pl2.field.dots))
+            print(self.pl1.name, "turn!")
             coords = self.pl1.read_position(self.pl2)
             self.current_player = not self.current_player if self.pl2.shoot_at(coords, self.pl2) else self.current_player 
         else:
-            print(self.pl2.name, "turn:")
+            print(self.pl1.name, "field:")
             print(self.pl1.show_shoots(self.pl1.field.dots))
+            print(self.pl2.name, "turn!")
             coords = self.pl2.read_position(self.pl1)
             self.current_player = not self.current_player if self.pl1.shoot_at(coords, self.pl1) else self.current_player
-        input()
+        input("Press ENTER")
         self.current_player = not self.current_player 
         if self.check_winner(self.pl1):
             self.show_winner(self.pl2)
