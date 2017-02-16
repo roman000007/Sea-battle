@@ -1,9 +1,8 @@
 # Battleships
 
-Clear methods and functions in classes(pb.\pr.)
+#### Enjoy this game with friends =)
+--
 
-Documentation
 
-Game algorithm(like player`s turn)(wait with it)
+Created by `Roman Vey`
 
-PEP8? Delete rubbish?

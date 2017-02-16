@@ -1,15 +1,14 @@
 import random
 import os
 clear = lambda: os.system('cls')
-
-# * - ship
-# X - hitted
-# O - missed
-#   - Empty
-# docs, readme.md, field info, github and share
       
 class Field:
     def __init__(self, file = None):
+        """
+        (file) -> None
+        Initializer for Field class
+        Return: none
+        """
         self.dots = []
         self.ships = []
         if file is not None:
@@ -20,6 +19,11 @@ class Field:
         
         
     def get_ship_by_coords(self, coords):
+        """
+        (tuple) -> Ship
+        Return Ship object by cooeds
+        Return: Ship
+        """
         for ship in self.ships:
             if coords in ship.healthy_coords or coords in ship.damaged_coords:
                 return ship
@@ -57,6 +61,11 @@ class Field:
         
     
     def show_all_ships(self):
+        """
+        () -> None
+        Print all ships info in the field
+        Return: none
+        """
         res = ""
         for ship in self.ships:
             print(ship)
@@ -237,6 +246,11 @@ class Field:
     
 class Ship:
     def __init__(self, field, coords = None):
+        """
+        (Field, tuple) -> None
+        Initializer for Ship class
+        Return: none
+        """
         self.healthy_coords = []
         self.damaged_coords = []
         self.killed = False
@@ -258,11 +272,21 @@ class Ship:
 
 class Player:
     def __init__(self, name, field):
+        """
+        (string, Field) -> None
+        Initializer for Player class
+        Return: none
+        """
         self.name = name
         self.field = field
         self.shoots = []
     
     def shoot_at(self, coords, player):
+        """
+        (tuple, Player) -> None
+        Update coords and return is hitted
+        Return: bool
+        """
         self.shoots.append(coords)
         if coords in player.field.dots:
             ship = player.field.get_ship_by_coords(coords) 
@@ -280,6 +304,11 @@ class Player:
     
     
     def update_coords(self, coords):
+        """
+        (list of tuples) -> None
+        Update coords surrounded by dead ship
+        Return: none
+        """
         vert = True if len(coords) == 1 or coords[0][0] == coords[1][0] else False
         if vert:
             min_v = coords[0][1]
@@ -311,8 +340,14 @@ class Player:
             self.shoots.append((max_v + 1, coords[0][1] + 1))
     
     def show_shoots(self, ships):
-        res = ""
+        """
+        (list of tuples) -> None
+        Print user-friendly field
+        Return: none
+        """
+        res = " 0123456789\n"
         for i in range(10):
+            res += chr(ord('A') + i)
             for j in range(10):
                 if (i, j) in self.shoots and (i, j) not in ships:
                     res += "."
@@ -325,16 +360,21 @@ class Player:
     
     
     def read_position(self, player):
+        """
+        (Player) -> tuple
+        Get string and transform to valid coords
+        Return: tuple
+        """
         while True:
             s = input("Your shoot: ")
             try:
                 i1 = int(ord(s[:1]) - ord('A'))
-                i2 = int(s[1:]) - 1
+                i2 = int(s[1:])
             except:
-                print("Invalid syntax, use 'A1'-'J10'")
+                print("Invalid syntax, use 'A0'-'J9'")
                 continue
             if i1 > 9 or i2 > 9 or i1 < 0 or i2 < 0:
-                print("Field is too small, use 'A1'-'J10'")
+                print("Field is too small, use 'A0'-'J9'")
                 continue
             elif (i1, i2) in player.shoots:
                 print("You already hit this, choose another one")
@@ -346,6 +386,11 @@ class Player:
         
 class Game:
     def __init__(self):
+        """
+        () -> None
+        Initializer for Game class
+        Return: none
+        """
         print("=============================================")
         print("       Game Battleship")
         print("=============================================")
@@ -369,6 +414,11 @@ class Game:
         
         
     def player_turn(self):
+        """
+        () -> None
+        Turn modeling
+        Return: none
+        """
         clear()  
         if self.current_player:
             print(self.pl2.name, "field:")
@@ -393,6 +443,11 @@ class Game:
     
     
     def check_winner(self, player):
+        """
+        (Player) -> bool
+        Check is player`s field empty
+        Return: bool
+        """
         yes = True
         for ship in player.field.ships:
             if not ship.killed:
@@ -403,8 +458,18 @@ class Game:
     
     
     def show_winner(self, player):
+        """
+        (Player) -> None
+        Print winning message
+        Return: none
+        """
         print(player.name, "wins!!! CONGRATULATIONS!")
         
 
+# * - ship
+# X - hitted
+# . - missed
+#   - Empty
 
+#start game
 game = Game()
