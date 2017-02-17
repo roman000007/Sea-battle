@@ -5,7 +5,8 @@
 
 You can:
 - use own field from .txt file
-- our random generated field
+- use our random generated field
+- a lot of other features
 
 To start open *class.py* file
 
